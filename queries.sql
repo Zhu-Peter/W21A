@@ -51,8 +51,14 @@ insert into employees (name, position, hired_at, hourly_wage) values
 create procedure get_all_items()
     select * from items;
 -- Create a procedure that takes 3 arguments as a name, description and quantity_in_stock, inserts a new item into the table and returns the newly created items id
+DELIMITER $$
+$$
 create procedure insert_new_item(name varchar(255), description varchar(255), in_stock_quantity int)
-    insert into items (name, description, in_stock_quantity) values (name, description, in_stock_quantity);
+begin
+    insert into items (name, description, in_stock_quantity) values (name, description, in_stock_quantity)$$
+    select id from items where items.name = name$$
+end$$
+DELIMITER ;
 -- Create a procedure that takes 2 arguments, an id and number and updates the item with the matching id to have the number added to quantity_in_stock and returns the items new quantity_in_stock
 create procedure update_item_quantity(id int, num int)
     update items set in_stock_quantity = in_stock_quantity + num where id = id;
@@ -63,8 +69,15 @@ create procedure delete_item(id int)
 create procedure get_employee_by_id(employee_id int)
     select * from employees where id = employee_id;
 -- Create a procedure that takes 3 arguments as a name, position and hourly_wage, inserts a new employee into the table and returns the newly created employee id
-create procedure insert_new_employee(name varchar(255), position varchar(255), hourly_wage int)
-    insert into employees (name, position, hourly_wage) values (name, position, hourly_wage);
+DELIMITER $$
+$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `w21a`.`insert_new_employee`(name varchar(255), position varchar(255), hourly_wage int)
+begin
+insert into employees (name, position, hourly_wage) values (name, position, hourly_wage);
+select id from employees where employees.name = name;
+end$$
+DELIMITER ;
+
 -- Create a procedure that takes 2 arguments, an id and number and updates the employee with the matching id to have the a new hourly_wage and return that new hourly_wage
 create procedure update_employee_wage(id int, num int)
     update employees set hourly_wage = hourly_wage + num where id = id;
