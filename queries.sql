@@ -55,8 +55,8 @@ DELIMITER $$
 $$
 create procedure insert_new_item(name varchar(255), description varchar(255), in_stock_quantity int)
 begin
-    insert into items (name, description, in_stock_quantity) values (name, description, in_stock_quantity)$$
-    select id from items where items.name = name$$
+    insert into items (name, description, in_stock_quantity) values (name, description, in_stock_quantity);
+    select id from items where items.name = name;
 end$$
 DELIMITER ;
 -- Create a procedure that takes 2 arguments, an id and number and updates the item with the matching id to have the number added to quantity_in_stock and returns the items new quantity_in_stock
