@@ -57,3 +57,10 @@ def run_statement(statement, list_of_args = []):
     raise "Statement Error"
   close_connection(cursor)
   return results
+
+def check_endpoint_info(sent_data, expected_data):
+  for data in expected_data:
+    if(sent_data.get(data) == None):
+      return f"The {data} parameter is required!"
+    
+# from dbhelpers import run_statement, check_endpoint_info
