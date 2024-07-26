@@ -63,4 +63,77 @@ def update_item():
         err["error"] = f"Error updating items: {error}"
         return make_response(jsonify(err), 400)
 
+@app.delete('/api/item')
+def delete_item():
+    id = int(request.get_json(force=True)["id"])
+    try:
+        result = run_statement("CALL delete_item(?)", [id])
+        print(type(result))
+        if (result):
+            return make_response(jsonify(result), 201)
+    except Exception as error:
+        err = {}
+        err["error"] = f"Error updating items: {error}"
+        return make_response(jsonify(err), 400)
+
+@app.get('/api/employee')
+def get_items():
+    id = int(request.get_json(force=True)["id"])
+    try:
+        result = run_statement("CALL get_employee_by_id(?)", [id])
+        print(type(result))
+        if (result):
+            return make_response(jsonify(result), 200)
+    except Exception as error:
+        err = {}
+        err["error"] = f"Error calling employee: {error}"
+        return make_response(jsonify(err), 400)
+
+@app.post('/api/employee')
+def new_item():
+    print(request.data)
+    name = request.get_json(force=True)["name"]
+    position = request.get_json(force=True)["position"]
+    wage = int(request.get_json(force=True)["wage"])
+
+    try:
+
+        result = run_statement("CALL insert_new_employee(?, ?, ?)", [name, position, wage])
+        print(type(result))
+        if (result):
+            return make_response(jsonify(result), 201)
+    except Exception as error:
+        err = {}
+        err["error"] = f"Error adding employee: {error}"
+        return make_response(jsonify(err), 400)
+
+@app.patch('/api/employee')
+def update_item():
+
+    id = int(request.get_json(force=True)["id"])
+    wage = int(request.get_json(force=True)["wage"])
+
+    try:
+        result = run_statement("CALL update_employee_wage(?, ?)", [id, wage])
+        print(type(result))
+        if (result):
+            return make_response(jsonify(result), 201)
+    except Exception as error:
+        err = {}
+        err["error"] = f"Error updating wage: {error}"
+        return make_response(jsonify(err), 400)
+
+@app.delete('/api/employee')
+def delete_item():
+    id = int(request.get_json(force=True)["id"])
+    try:
+        result = run_statement("CALL delete_employee(?)", [id])
+        print(type(result))
+        if (result):
+            return make_response(jsonify(result), 201)
+    except Exception as error:
+        err = {}
+        err["error"] = f"Error deleting employee: {error}"
+        return make_response(jsonify(err), 400)
+
 app.run(debug=True)
